@@ -9,8 +9,14 @@ state = {
     "incident": ["idk"]
   },
   "players": ["coper", "seether"],
-  "callbacks": [],
-  "history": [],
+  "effects": [],
+  "history": [
+              Event(typee=EventType.GAME_SETUP, children=[Effect(typee=EffectType.)])
+              Event(typee=EventType.TURN_START, children=[Effect(typee=EffectType.Modify_Anything)]),
+              Event(typee=EventType.EFFECT_RESET),
+              Event(typee=EventType.LIMIT_RESET),
+              Event(typee=EventType.INCIDENT_STEP),
+              ],
 }
 
 sstate = {

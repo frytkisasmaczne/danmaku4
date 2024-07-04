@@ -4,7 +4,7 @@ from ..effect import *
 from ..ui import *
 
 
-def can(self, state, player: Player):
+def _can(self, state, player: Player):
   if state["turn"] != player.uuid:
     return False
   results = []
@@ -14,25 +14,32 @@ def can(self, state, player: Player):
         results.append(obj)
         # TODO commit
       results.remove(player)
-      return results
+    return results
 
 
-def janny(self, state, event):
+def _janny(self, state, event):
+  # if round has passed from this event: sewerside self
   for effect in event.effects:
-    _janny(state, effect)
+    __janny(state, effect)
 
 
-def _janny(self, state, effect):
+def __janny(self, state, effect):
   for eff in effect.effects:
-    _janny(state, eff)
+    __janny(state, eff)
   if effect.typee == EffectType.Modify_Anything:
     for player in effect.statedelta["players"]:
       if player.uuid == self.target:
         if player["hp"] < 0:
-          player.pop("hp")
+          player.pop("hp") # na razie ok ale pewnie bedzie pozniej klopotliwe sprawdzanie oddzielnie pending efektow i dodawanie wlasnych efektow. wlasciwie moze i nie. chyba wlasnie to bedzie bardzo pasowac
+# no hp loss (incident)
+# incident does nothing for a round(card)
+# shoot
 
+# does shoot damage well yes since 
 
 bagaznik = Card()
 bagaznik.name = "Bagażnik"
-bagaznik.can = can
-bagaznik.filter = janny
+bagaznik.can = _can
+bagaznik.filter = _janny
+
+
