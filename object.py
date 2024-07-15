@@ -1,8 +1,10 @@
+from dataclasses import dataclass
 from uuid import uuid4, UUID
 from enum import Enum
 
 objects = {}
 
+@dataclass
 class Object:
   uuid = None
   callbacks = None

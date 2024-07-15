@@ -1,7 +1,7 @@
-from ..card import *
-from ..player import *
-from ..effect import *
-from ..ui import *
+from card import *
+from player import *
+from effect import *
+from ui import *
 
 
 def _can(self, state, player: Player):
@@ -18,7 +18,7 @@ def _can(self, state, player: Player):
 
 
 def _janny(self, state, event):
-  # if round has passed from this event: sewerside self
+  #todo if full round has passed from this event: sewerside self
   for effect in event.effects:
     __janny(state, effect)
 
@@ -37,9 +37,18 @@ def __janny(self, state, effect):
 
 # does shoot damage well yes since 
 
+def _mod(self, state, pending: list[Effect]):
+  before_pending = list(pending)
+  for mod in state:
+    mod(state, pending)
+
+def __mod(self, state, pending: list[Effect]):
+  print(self)
+
+
 bagaznik = Card()
 bagaznik.name = "Bagażnik"
 bagaznik.can = _can
 bagaznik.filter = _janny
-
+bagaznik.mod = __mod
 
