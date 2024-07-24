@@ -3,30 +3,6 @@ from event import *
 from effect import *
 
 
-state = {
-  "incident": "idk",
-  "discard": {
-    "incident": ["idk"]
-  },
-  "players": ["coper", "seether"],
-  "effects": [],
-  "history": [
-              Event(typee=EventType.GAME_SETUP, children=[Effect(typee=EffectType.)])
-              Event(typee=EventType.TURN_START, children=[Effect(typee=EffectType.Modify_Anything)]),
-              Event(typee=EventType.EFFECT_RESET),
-              Event(typee=EventType.LIMIT_RESET),
-              Event(typee=EventType.INCIDENT_STEP),
-              ],
-}
-
-sstate = {
-  "draw": {
-    "incident": ["idk", "idk"]
-  },
-  "player_hands": {"coper": [], "seether": []},
-}
-
-
 def main():
   
   while True:
@@ -34,6 +10,15 @@ def main():
     for player in state["players"]:
       # turn
       turn()
+
+
+# w state["pending"] wloz co sie chce stac
+# apply,pileon,can or apply,pileon
+def tick(state, ):
+  while True:
+    for i in range(len(state["mods"])):
+      pass
+    
 
 
 def turn():
@@ -54,6 +39,62 @@ def turn():
         pass
   # pass
 
+
+def _reset_danmaku_sc_limits(state):
+  if (
+    ("_reset_danmaku_sc_limits" not in executed
+    or not executed["_reset_danmaku_sc_limits"])
+    and state["step"] == "start of turn"
+    ):
+    executed["_reset_danmaku_sc_limits"] = 1 #limit access
+    for player in state["players"]:
+      player["danmaku"] = player["danmaku_max"] #todo replace with danmaku_max() maybe
+      player["sc"] = player["sc_max"]
+
+
+def _incident_draw(state, sstate):
+  if (
+    ("_incident_draw" not in executed
+    or not executed["_incident_draw"])
+    and state["step"] == "start of turn"
+    ):
+    executed["_incident_draw"] = 1
+    if not state["incident"]:
+      #out with it to draw_incident()
+      state["incident"].append(sstate["draw"]["incident"].pop())
+      
+
+executed = {}
+
+state = {
+  "step": "setup",
+  "round": 0,
+  "turn": 0,
+  "incident": ["idk"],
+  "discard": {
+    "incident": ["idk"]
+  },
+  "players": ["coper", "seether"],
+  "mods": [
+    _reset_danmaku_sc_limits,
+    _incident_draw
+    ],
+  "pending": [],
+  "history": [
+              # Event(typee=EventType.GAME_SETUP, children=[Effect(typee=EffectType.)])
+              # Event(typee=EventType.TURN_START, children=[Effect(typee=EffectType.Modify_Anything)]),
+              # Event(typee=EventType.EFFECT_RESET),
+              # Event(typee=EventType.LIMIT_RESET),
+              # Event(typee=EventType.INCIDENT_STEP),
+              ],
+}
+
+sstate = {
+  "draw": {
+    "incident": ["idk", "idk"]
+  },
+  "player_hands": {"coper": [], "seether": []},
+}
 
 
 # jeśli jedna niestandardowa karta robi zmianę
