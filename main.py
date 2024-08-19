@@ -4,21 +4,32 @@ from effect import *
 
 
 def main():
-  
+  next = Event(typee=EventType.GAME_SETUP)
   while True:
-    # round
-    for player in state["players"]:
-      # turn
-      turn()
+    next = tick(next, state, sstate)
 
 
-# w state["pending"] wloz co sie chce stac
-# apply,pileon,can or apply,pileon
-def tick(state, ):
+def tick(event: Event, state, sstate):
+  i = 0
   while True:
+    mods_acted = 0
     for i in range(len(state["mods"])):
-      pass
-    
+      if state["mods"][i](event, state, sstate):
+        mods_acted += 1
+    if mods_acted == 0:
+      break
+    # if no Mod in for returned True, meaning no Mod did anything
+    # then break the while
+  match event.typee:
+    case EventType.GAME_SETUP:
+      # deal roles characters somehow idk
+      return Event(typee=EventType.START_OF_TURN)
+    case EventType.START_OF_TURN:
+      # reset danmaku sc limits are in mods
+      return Event(typee=EventType.INCIDENT_STEP)
+    case EventType.INCIDENT_STEP:
+      
+      return Event
 
 
 def turn():
@@ -80,14 +91,15 @@ state = {
     _incident_draw
     ],
   "pending": [],
-  "history": [
+}
+
+history = [
               # Event(typee=EventType.GAME_SETUP, children=[Effect(typee=EffectType.)])
               # Event(typee=EventType.TURN_START, children=[Effect(typee=EffectType.Modify_Anything)]),
               # Event(typee=EventType.EFFECT_RESET),
               # Event(typee=EventType.LIMIT_RESET),
               # Event(typee=EventType.INCIDENT_STEP),
-              ],
-}
+              ]
 
 sstate = {
   "draw": {

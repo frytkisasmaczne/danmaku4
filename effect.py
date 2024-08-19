@@ -14,6 +14,6 @@ EffectType = Enum("EffectType",
 
 class Effect():
   typee = None
-  children = None
+  parents_uuids = []
   statebefore = None
   statedelta = None

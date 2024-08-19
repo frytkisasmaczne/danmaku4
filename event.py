@@ -5,7 +5,7 @@ from effect import *
 EventType = Enum("EventType",
   [
     "GAME_SETUP",
-    "TURN_START",
+    "START_OF_TURN",
     "EFFECT_RESET",
     "LIMIT_RESET",
     "INCIDENT_STEP",
